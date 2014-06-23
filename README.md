@@ -18,3 +18,10 @@ Goals
  - Non constant DeltaT_t, non incremental Pn(T) OR Pn
  - Non constant DeltaT_t, non incremental Pn(T,n)
  - Create a package of these simulations that can be run by other people
+
+To Do
+-----
+ - check that code meets python style guide
+ - give system alpha_g and alpha_a
+ - define increase temp
+ - define measure thickness
