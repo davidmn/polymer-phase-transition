@@ -22,4 +22,4 @@ Goals
 To Do
 -----
  - check that code meets python style guide
- - define measure thickness
+ - method that defines critical temps for layers
