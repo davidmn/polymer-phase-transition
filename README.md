@@ -22,6 +22,4 @@ Goals
 To Do
 -----
  - check that code meets python style guide
- - give system alpha_g and alpha_a
- - define increase temp
  - define measure thickness
