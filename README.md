@@ -7,6 +7,7 @@ Dependencies
 ------------
 - python 2.blah
 - numpy
+- matplotlib
 
 Goals
 -----
@@ -21,5 +22,4 @@ Goals
 
 To Do
 -----
- - check that code meets python style guide
- - method that expands layers as temp increases
+ - start changing alpha_blah with temp

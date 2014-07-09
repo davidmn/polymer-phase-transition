@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-import numpy as np
+import numpy
 import random
+import pylab as pl
 
 class System(object):
 	"""object representing the entire system, composed of multiple layer objects"""
@@ -14,7 +15,6 @@ class System(object):
 		self.final_temp = final_temp #final temperature
 		self.temp_inc = temp_inc #amount to incremement temperature by
 		self.layer = []
-		self.delt_T = self.critical_temps()
 		for i in range(self.num_layers): #populate the array self.layer with object of class Layer()
 			obj = Layer(self.layer_thickness)
 			self.layer.append(obj)
@@ -31,6 +31,7 @@ class System(object):
 			i = i + element.thickness
 		return i
 
+
 	def critical_temps(self):
 		temp_range = self.final_temp - self.temp
 		temp_interval = temp_range / self.num_layers
@@ -38,8 +39,14 @@ class System(object):
 		for element in self.layer:
 			element.critical_temp = var + temp_interval
 			var = element.critical_temp
-			print element.critical_temp
 		pass
+
+	def expand_all(self):
+		self.increase_temp()
+		for element in self.layer:
+			element.expand(self.temp_inc)
+		pass
+
 
 class Layer(object):
 	"""object representing a single layer"""
@@ -47,6 +54,11 @@ class Layer(object):
 		self.thickness = layer_thickness
 		self.coefficient = alpha_g
 		self.critical_temp = 0.0
+		pass
+
+	def expand(self,incremement):
+		change = self.thickness * self.coefficient * incremement
+		self.thickness = self.thickness + change
 		pass
 		
 alpha_g = 2.5641e-2 #nm/k
@@ -56,5 +68,20 @@ num_layers = 300
 start_temp = 290.0 #k
 end_temp = 330.0 #k
 incremement = 0.005 #k
-sample = System(sample_thickness,num_layers,start_temp,end_temp,incremement,alpha_a,alpha_g)		
-	
+sample = System(sample_thickness,num_layers,start_temp,end_temp,incremement,alpha_a,alpha_g)
+data = []
+T = []	
+
+data.append(sample.measure_thickness())
+T.append(sample.temp)
+for i in range(400):
+	sample.expand_all()
+	data.append(sample.measure_thickness())
+	T.append(sample.temp)
+
+for i in range(400):
+	print T[i], data[i]
+
+pl.plot(T,data)
+pl.show()
+
