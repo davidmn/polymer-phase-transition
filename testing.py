@@ -18,11 +18,7 @@ class System(object):
 		for i in range(self.num_layers): #populate the array self.layer with object of class Layer()
 			obj = Layer(self.layer_thickness)
 			self.layer.append(obj)
-		for element in self.layer:
-			element.critical_temp = start_temp + self.delt_T
-			print element.critical_temp
-			pass
-		print "initialisation complete"
+		self.critical_temps()
 		pass
 
 	def increase_temp(self): #method to increase system temperature
@@ -38,7 +34,11 @@ class System(object):
 	def critical_temps(self):
 		temp_range = self.final_temp - self.temp
 		temp_interval = temp_range / self.num_layers
-		return temp_interval
+		var = self.temp
+		for element in self.layer:
+			element.critical_temp = var + temp_interval
+			var = element.critical_temp
+			print element.critical_temp
 		pass
 
 class Layer(object):

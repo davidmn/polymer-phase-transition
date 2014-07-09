@@ -22,4 +22,4 @@ Goals
 To Do
 -----
  - check that code meets python style guide
- - method that defines critical temps for layers
+ - method that expands layers as temp increases
