@@ -76,17 +76,17 @@ end_temp = 330.0 #k
 incremement = 0.005 #k
 sample = System(sample_thickness,num_layers,start_temp,end_temp,incremement,alpha_a,alpha_g)
 data = []
-T = []	
+T = []
 
 data.append(sample.measure_thickness())
 T.append(sample.temp)
-for i in range(400):
+for i in range(50000):
 	sample.expand_all()
 	data.append(sample.measure_thickness())
 	T.append(sample.temp)
 
-for i in range(400):
-	print T[i], data[i]
+#for i in range(15000):
+#	print T[i], data[i]
 
 pl.plot(T,data)
 pl.show()
