@@ -44,7 +44,7 @@ class System(object):
 	def expand_all(self):
 		self.increase_temp()
 		for element in self.layer:
-			element.expand(self.temp_inc)
+			element.expand(self.temp_inc,self.temp)
 		pass
 
 
@@ -56,9 +56,15 @@ class Layer(object):
 		self.critical_temp = 0.0
 		pass
 
-	def expand(self,incremement):
+	def expand(self,incremement,temp):
+		self.change_phase(temp)
 		change = self.thickness * self.coefficient * incremement
 		self.thickness = self.thickness + change
+		pass
+
+	def change_phase(self,temp):
+		if temp > self.critical_temp:
+			self.coefficient = alpha_a
 		pass
 		
 alpha_g = 2.5641e-2 #nm/k

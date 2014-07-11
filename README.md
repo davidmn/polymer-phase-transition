@@ -22,4 +22,4 @@ Goals
 
 To Do
 -----
- - start changing alpha_blah with temp
+ - start changing alpha_blah with temp (I think I've done this)
