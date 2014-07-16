@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import numpy
 import pylab as pl
+import csv
+from itertools import izip
 
 class System(object):
 	"""object representing the entire system, composed of multiple layer objects"""
@@ -72,7 +74,7 @@ class Layer(object):
 alpha_g = 2.5641e-2 #nm/k
 alpha_a = 8.2957e-2 #nm/k
 sample_thickness = 300.0 #nm
-num_layers = 300
+num_layers = 10
 sim_start = 200.0
 start_temp = 290.0 #k
 end_temp = 330.0 #k
@@ -82,28 +84,23 @@ sample = System(sample_thickness,num_layers,start_temp,end_temp,incremement,alph
 data = []
 T = []
 
+print len(sample.layer)
+
 data.append(sample.measure_thickness())
 T.append(sample.temp)
-
-for element in sample.layer:
-	print element.coefficient
 
 while (sample.temp < sim_end ):
 	sample.expand_all()
 	data.append(sample.measure_thickness())
 	T.append(sample.temp)
 
-#for i in range(1000):
-#	sample.expand_all()
-#	data.append(sample.measure_thickness())
-#	T.append(sample.temp)
+with open('data.csv', 'wb') as f:
+	writer = csv.writer(f)
+	writer.writerows(izip(T, data))
 
-#for i in range(15000):
-#	print T[i], data[i]
-
-for element in sample.layer:
-	print element.coefficient
+f.close()
 
 pl.plot(T,data)
+pl.xlabel("Temperature (K)")
+pl.ylabel("Thickness (nm)")
 pl.show()
-
