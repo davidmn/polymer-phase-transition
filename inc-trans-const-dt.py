@@ -85,6 +85,9 @@ T = []
 data.append(sample.measure_thickness())
 T.append(sample.temp)
 
+for element in sample.layer:
+	print element.coefficient
+
 while (sample.temp < sim_end ):
 	sample.expand_all()
 	data.append(sample.measure_thickness())
@@ -97,6 +100,9 @@ while (sample.temp < sim_end ):
 
 #for i in range(15000):
 #	print T[i], data[i]
+
+for element in sample.layer:
+	print element.coefficient
 
 pl.plot(T,data)
 pl.show()
