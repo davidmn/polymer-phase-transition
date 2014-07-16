@@ -22,4 +22,4 @@ Goals
 
 To Do
 -----
- - start changing alpha_blah with temp (I think I've done this)
+ - why is the curve so steep after phase change?
