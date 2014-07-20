@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import math
 import numpy
 import pylab as pl
 import csv
@@ -79,7 +80,7 @@ sim_start = 200.0
 start_temp = 290.0 #k
 end_temp = 330.0 #k
 sim_end = 350.0
-incremement = 0.5 #k
+incremement = 0.1 #k
 sample = System(sample_thickness,num_layers,start_temp,end_temp,incremement,alpha_a,alpha_g,sim_start,sim_end)
 data = []
 T = []
@@ -94,13 +95,28 @@ while (sample.temp < sim_end ):
 	data.append(sample.measure_thickness())
 	T.append(sample.temp)
 
-with open('data.csv', 'wb') as f:
-	writer = csv.writer(f)
-	writer.writerows(izip(T, data))
+def write_data(yesno):
+	if yesno == True:
+		with open('data.csv', 'wb') as f:
+			writer = csv.writer(f)
+			writer.writerows(izip(T, data))
+		f.close()
+	else:
+		pass
 
-f.close()
+write_data(False)
 
-pl.plot(T,data)
-pl.xlabel("Temperature (K)")
-pl.ylabel("Thickness (nm)")
+data_log = []
+T_log = []
+
+for element in data:
+	data_log.append(math.log10(element))
+
+for element in T:
+	T_log.append(math.log10(element))
+
+
+pl.plot(T_log,data_log)
+pl.xlabel("log_10 Temperature (K)")
+pl.ylabel("log_10 Thickness (nm)")
 pl.show()
