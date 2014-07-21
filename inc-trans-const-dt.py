@@ -12,7 +12,10 @@ class System(object):
 		self.alpha_g = alpha_g #glass phase expansion coefficient
 		self.tot_thickness = tot_thickness #total thickness of sample
 		self.num_layers = layers #number of layers in sample
+		print "number of layers ", self.num_layers
+		print "total thickness", self.tot_thickness
 		self.layer_thickness = self.tot_thickness / self.num_layers #initial thickness of each sample
+		print "layer thickness ", self.layer_thickness
 		self.temp = sim_start # starting temp for sample
 		self.init_temp = init_temp # phase start
 		self.final_temp = final_temp # phase end
@@ -21,13 +24,17 @@ class System(object):
 		self.temp_inc = temp_inc #amount to incremement temperature by
 		self.layer = []
 		for i in range(self.num_layers): #populate the array self.layer with object of class Layer()
-			obj = Layer(self.layer_thickness)
+			obj = Layer(self.layer_thickness,self.sim_start	)
 			self.layer.append(obj)
 		self.critical_temps()
 		pass
 
 	def increase_temp(self): #method to increase system temperature
 		self.temp = self.temp + self.temp_inc
+
+		for element in self.layer:
+			element.current_temp = element.current_temp + self.temp_inc
+
 		pass
 
 	def measure_thickness(self): #method to measure thickness of sample
@@ -49,38 +56,48 @@ class System(object):
 	def expand_all(self):
 		self.increase_temp()
 		for element in self.layer:
-			element.expand(self.temp_inc,self.temp)
+			element.expand(self.temp_inc)
 		pass
 
 
 class Layer(object):
 	"""object representing a single layer"""
-	def __init__(self,layer_thickness):
+	def __init__(self,layer_thickness,init_temp):
+		self.init_temp = init_temp
+		self.current_temp = init_temp
 		self.thickness = layer_thickness
+		self.init_thickness = layer_thickness
+		print self.thickness
 		self.coefficient = alpha_g
 		self.critical_temp = 0.0
+		self.phase_changed = False
 		pass
 
-	def expand(self,incremement,temp):
-		self.change_phase(temp)
-		change = self.thickness * self.coefficient * incremement
-		self.thickness = self.thickness + change
+	def expand(self,incremement):
+		self.change_phase()
+		#change = self.thickness * self.coefficient * incremement
+		self.thickness = self.init_thickness + (self.coefficient * (self.current_temp - self.init_temp))
+		#self.thickness = self.thickness + 0.1
 		pass
 
-	def change_phase(self,temp):
-		if temp > self.critical_temp:
+	def change_phase(self):
+		if self.current_temp > self.critical_temp:
 			self.coefficient = alpha_a
+			self.phase_changed = True
+
+			if self.phase_changed == False:
+				self.init_temp = self.current_temp
 		pass
 		
 alpha_g = 2.5641e-2 #nm/k
 alpha_a = 8.2957e-2 #nm/k
-sample_thickness = 300.0 #nm
-num_layers = 10
-sim_start = 200.0
-start_temp = 290.0 #k
-end_temp = 330.0 #k
+sample_thickness = 277.0 #nm
+num_layers = 100
+sim_start = 230.0
+start_temp = 250.0 #k
+end_temp = 300.0 #k
 sim_end = 350.0
-incremement = 0.1 #k
+incremement = 1 #k
 sample = System(sample_thickness,num_layers,start_temp,end_temp,incremement,alpha_a,alpha_g,sim_start,sim_end)
 data = []
 T = []
@@ -94,6 +111,7 @@ while (sample.temp < sim_end ):
 	sample.expand_all()
 	data.append(sample.measure_thickness())
 	T.append(sample.temp)
+	print sample.layer[0].thickness, sample.layer[0].init_temp, sample.layer[0].current_temp, sample.layer[0].phase_changed, sample.layer[0].coefficient
 
 def write_data(yesno):
 	if yesno == True:
@@ -109,14 +127,13 @@ write_data(False)
 data_log = []
 T_log = []
 
-for element in data:
-	data_log.append(math.log10(element))
+#for element in data:
+#	data_log.append(math.log10(element))
 
-for element in T:
-	T_log.append(math.log10(element))
+#for element in T:
+#	T_log.append(math.log10(element))
 
-
-pl.plot(T_log,data_log)
-pl.xlabel("log_10 Temperature (K)")
-pl.ylabel("log_10 Thickness (nm)")
+pl.plot(T,data)
+pl.xlabel("Temperature (K)")
+pl.ylabel("Thickness (nm)")
 pl.show()
