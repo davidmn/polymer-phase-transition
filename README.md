@@ -26,4 +26,6 @@ To Do
 
 Known Issues
 ------------
- - not changing iniitial temp while phase changes
+ - why are the gradients so weird?
+ - why are we off by a factor of the number of layers?
+ - what is love?

@@ -67,10 +67,8 @@ class Layer(object):
 		self.current_temp = init_temp
 		self.thickness = layer_thickness
 		self.init_thickness = layer_thickness
-		print self.thickness
 		self.coefficient = alpha_g
 		self.critical_temp = 0.0
-		self.phase_changed = False
 		pass
 
 	def expand(self,incremement):
@@ -81,23 +79,26 @@ class Layer(object):
 		pass
 
 	def change_phase(self):
+		a = self.coefficient
 		if self.current_temp > self.critical_temp:
 			self.coefficient = alpha_a
-			self.phase_changed = True
+		b = self.coefficient
 
-			if self.phase_changed == False:
-				self.init_temp = self.current_temp
+		if a != b:
+			self.init_temp = self.current_temp
+
+		#if phase changed, set self.init_temp = self.current_temp THEN DON'T DO IT AGAIN
 		pass
 		
 alpha_g = 2.5641e-2 #nm/k
 alpha_a = 8.2957e-2 #nm/k
 sample_thickness = 277.0 #nm
-num_layers = 100
+num_layers = 1000
 sim_start = 230.0
 start_temp = 250.0 #k
 end_temp = 300.0 #k
 sim_end = 350.0
-incremement = 1 #k
+incremement = 0.01 #k
 sample = System(sample_thickness,num_layers,start_temp,end_temp,incremement,alpha_a,alpha_g,sim_start,sim_end)
 data = []
 T = []
@@ -111,7 +112,7 @@ while (sample.temp < sim_end ):
 	sample.expand_all()
 	data.append(sample.measure_thickness())
 	T.append(sample.temp)
-	print sample.layer[0].thickness, sample.layer[0].init_temp, sample.layer[0].current_temp, sample.layer[0].phase_changed, sample.layer[0].coefficient
+	print sample.layer[0].thickness, sample.layer[0].init_temp, sample.layer[0].current_temp, sample.layer[0].coefficient
 
 def write_data(yesno):
 	if yesno == True:
