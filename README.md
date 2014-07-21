@@ -22,4 +22,8 @@ Goals
 
 To Do
 -----
- - why is the curve so steep after phase change?
+ - fix known issues
+
+Known Issues
+------------
+ - not changing iniitial temp while phase changes
