@@ -23,9 +23,12 @@ Goals
 To Do
 -----
  - fix known issues
+ - COMMENCE AUTOMATION
+ - fit some curves
+ - get original data from matt
 
 Known Issues
 ------------
- - why are the gradients so weird?
  - why are we off by a factor of the number of layers?
- - what is love?
+  - need to confirm the solution with matt
+ - but what is science?
