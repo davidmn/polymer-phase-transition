@@ -5,6 +5,7 @@ import pylab as pl
 import csv
 from itertools import izip
 from string import Template
+import scipy
 
 class System(object):
 	"""object representing the entire system, composed of multiple layer objects"""
@@ -13,10 +14,10 @@ class System(object):
 		self.alpha_g = alpha_g #glass phase expansion coefficient
 		self.tot_thickness = tot_thickness #total thickness of sample
 		self.num_layers = layers #number of layers in sample
-		print "number of layers ", self.num_layers
-		print "total thickness", self.tot_thickness
+		#print "number of layers ", self.num_layers
+		#print "total thickness", self.tot_thickness
 		self.layer_thickness = self.tot_thickness / self.num_layers #initial thickness of each sample
-		print "layer thickness ", self.layer_thickness
+		#print "layer thickness ", self.layer_thickness
 		self.temp = sim_start # starting temp for sample
 		self.init_temp = init_temp # phase start
 		self.final_temp = final_temp # phase end
@@ -74,7 +75,7 @@ class Layer(object):
 
 	def expand(self,incremement):
 		self.change_phase()
-		change = self.thickness * self.coefficient * incremement
+		change = self.coefficient * incremement
 		#self.thickness = self.init_thickness + (self.coefficient * (self.current_temp - self.init_temp))
 		self.thickness = self.thickness + change
 		pass
@@ -91,56 +92,57 @@ class Layer(object):
 		#if phase changed, set self.init_temp = self.current_temp THEN DON'T DO IT AGAIN
 		pass
 
-num_layers = 100	
+num_layers = 50
 alpha_g = 2.5641e-2 / num_layers #nm/k
 alpha_a = 8.2957e-2 / num_layers #nm/k
 sample_thickness = 277.0 #nm
 sim_start = 230.0
-start_temp = 250.0 #k
-end_temp = 300.0 #k
-sim_end = 350.0
+start_temp = 235.0 #k
+end_temp = 270.0 #k
+sim_end = 320.0
 incremement = 0.01 #k
 sample = System(sample_thickness,num_layers,start_temp,end_temp,incremement,alpha_a,alpha_g,sim_start,sim_end)
 data = []
 T = []
 
-print len(sample.layer)
-
-data.append(sample.measure_thickness())
-T.append(sample.temp)
-
-while (sample.temp < sim_end ):
-	sample.expand_all()
-	data.append(sample.measure_thickness())
-	T.append(sample.temp)
-	#print sample.layer[0].thickness, sample.layer[0].init_temp, sample.layer[0].current_temp, sample.layer[0].coefficient
-
-filename = Template("$layers-$phasestart-$phaseend-$incremement")
-name = filename.substitute(layers=num_layers, phasestart=start_temp, phaseend=end_temp, incremement=incremement )
-print name
-
 def write_data(yesno):
 	if yesno == True:
-		with open("data/"+name+".csv", 'wb') as f:
+		with open("/home/megaslippers/Projects/polymer-phase-transition/data/"+name+".csv", 'wb') as f:
 			writer = csv.writer(f)
 			writer.writerows(izip(T, data))
 		f.close()
 	else:
 		pass
 
-write_data(True)
+def plot_save(T,data):
+	pl.plot(T,data)
+	pl.xlabel("Temperature (K)")
+	pl.ylabel("Thickness (nm)")
+	pl.savefig(("/home/megaslippers/Projects/polymer-phase-transition/figures/"+name+".png"))
+	#pl.clf()
+temp = end_temp
+while start_temp <= 255.0:
+	end_temp = temp
+	while end_temp <= 305.0:
+		sample = System(sample_thickness,num_layers,start_temp,end_temp,incremement,alpha_a,alpha_g,sim_start,sim_end)
+	
+		data.append(sample.measure_thickness())
+		T.append(sample.temp)
 
-data_log = []
-T_log = []
+		while (sample.temp < sim_end ):
+			sample.expand_all()
+			data.append(sample.measure_thickness())
+			T.append(sample.temp)
 
-#for element in data:
-#	data_log.append(math.log10(element))
+		filename = Template("$layers-$phasestart-$phaseend-$incremement")
+		name = filename.substitute(layers=num_layers, phasestart=start_temp, phaseend=end_temp, incremement=incremement )
 
-#for element in T:
-#	T_log.append(math.log10(element))
+		write_data(True)
 
-pl.plot(T,data)
-pl.xlabel("Temperature (K)")
-pl.ylabel("Thickness (nm)")
-#pl.show()
-pl.savefig(("figures/"+name+".png"))
+		plot_save(T,data)
+		T = []
+		data = []
+		print start_temp, end_temp
+		end_temp = end_temp + 5.0
+
+	start_temp = start_temp + 5.0
