@@ -24,7 +24,7 @@ print "using {} as simulation data".format(sim_files[0])
 print "using {} as observed data".format(obs_files[select])
 
 #open the simulation data and fill the lists
-with open((sim_path+sim_files[0]), 'rb') as csvfile:
+with open((sim_path+sim_files[50]), 'rb') as csvfile:
 	reader = csv.reader(csvfile, delimiter=',', quotechar='|')
 	for row in reader:
 		sim_temp.append(float(row[0]))
