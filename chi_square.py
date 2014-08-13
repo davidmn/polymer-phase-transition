@@ -2,21 +2,32 @@ import os
 import csv
 import pylab as pl
 
-mypath = "/home/megaslippers/Projects/polymer-phase-transition/data/"
+#change these to the directories/paths of simulation data and observed csv
+sim_path = "/home/megaslippers/Projects/polymer-phase-transition/data/"
+obs_path = "/home/megaslippers/Projects/polymer-phase-transition/results/csv/"
 
-files = os.listdir(mypath)
+#lists the files in those paths
+sim_files = os.listdir(sim_path)
+obs_files = os.listdir(obs_path)
 
+#creates empty lists for the data
 sim_temp = []
 sim_thick = []
+obs_temp = []
+obs_thick =[]
 
-with open((mypath+files[0]), 'rb') as csvfile:
+#open the simulation data and fill the lists
+with open((sim_path+sim_files[0]), 'rb') as csvfile:
 	reader = csv.reader(csvfile, delimiter=',', quotechar='|')
 	for row in reader:
-		sim_temp.append(row[0])
-		sim_thick.append(row[1])
+		sim_temp.append(float(row[0]))
+		sim_thick.append(float(row[1]))
 
-print len(sim_temp)
-print len(sim_thick)
+#open the observed data and fill the lists
+#also converts observed temps into kelvin
+with open((obs_path+obs_files[0]), 'rb') as csvfile:
+	reader = csv.reader(csvfile, delimiter = ",", quotechar = "|")
+	for row in reader:
+		obs_temp.append(float(row[0])+273.0)
+		obs_thick.append(float(row[1]))
 
-pl.plot(sim_temp,sim_thick)
-pl.show()
