@@ -21,7 +21,7 @@ Goals
 To Do
 -----
  - fix known issues
- - fit some curves
+cd  - fit some curves
 
 Known Issues
 ------------
