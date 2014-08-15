@@ -21,7 +21,6 @@ Goals
 To Do
 -----
  - fix known issues
- - COMMENCE AUTOMATION
  - fit some curves
 
 Known Issues
