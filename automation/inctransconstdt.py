@@ -95,7 +95,7 @@ class Layer(object):
 num_layers = 50
 alpha_g = 2.5641e-2 / num_layers #nm/k
 alpha_a = 8.2957e-2 / num_layers #nm/k
-sample_thickness = 339.75 #nm
+sample_thickness = 345.99 #nm
 sim_start = 323.0
 start_temp = 324.0 #k
 end_temp = 422.0 #k
@@ -121,6 +121,7 @@ def plot_save(T,data):
 	#pl.savefig(("/home/megaslippers/Projects/polymer-phase-transition/figures/"+name+".png"))
 	#pl.clf()
 temp = end_temp
+counter = 0
 while start_temp <= 373.0:
 	end_temp = temp
 	while end_temp <= sim_end:
@@ -134,8 +135,8 @@ while start_temp <= 373.0:
 			data.append(sample.measure_thickness())
 			T.append(sample.temp)
 
-		filename = Template("$layers-$phasestart-$phaseend-$incremement")
-		name = filename.substitute(layers=num_layers, phasestart=start_temp, phaseend=end_temp, incremement=incremement )
+		filename = Template("$index-$layers-$phasestart-$phaseend-$incremement")
+		name = filename.substitute(index=counter, layers=num_layers, phasestart=start_temp, phaseend=end_temp, incremement=incremement )
 
 		write_data(True)
 
@@ -144,6 +145,7 @@ while start_temp <= 373.0:
 		data = []
 		print start_temp, end_temp
 		end_temp = end_temp + 1.0
+		counter = counter + 1
 
 	start_temp = start_temp + 1.0
 
