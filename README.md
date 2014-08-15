@@ -8,6 +8,7 @@ Dependencies
 - python 2.blah
 - numpy
 - matplotlib
+- scipy
 
 Goals
 -----
@@ -21,7 +22,7 @@ Goals
 To Do
 -----
  - fix known issues
-cd  - fit some curves
+ - fit some curves
 
 Known Issues
 ------------
