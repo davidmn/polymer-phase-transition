@@ -56,9 +56,11 @@ for element in selection:
 
 obs = numpy.array([obs_temp,obs_thick]).T
 sim = numpy.array([temp_temp,temp_thick]).T
-print scipy.stats.chisquare(obs, f_exp=sim)
+print len(temp_temp)
+for element in scipy.stats.chisquare(obs, f_exp=sim):
+	print element
 
-pl.plot(sim_temp,sim_thick)
+pl.plot(sorted(temp_temp),sorted(temp_thick))
 pl.plot(obs_temp,obs_thick)
 pl.xlabel("Temperature (K)")
 pl.ylabel("Thickness (nm)")
