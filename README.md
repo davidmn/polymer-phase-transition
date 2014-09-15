@@ -26,5 +26,5 @@ To Do
 
 Known Issues
 ------------
- - i want to know what love is,
- 	- i want you to show me
+ - why are the chi square things weird
+ 

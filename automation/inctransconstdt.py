@@ -96,10 +96,10 @@ num_layers = 50
 alpha_g = 2.5641e-2 / num_layers #nm/k
 alpha_a = 8.2957e-2 / num_layers #nm/k
 sample_thickness = 345.99 #nm
-sim_start = 323.0
-start_temp = 324.0 #k
-end_temp = 422.0 #k
-sim_end = 423.0
+sim_start = 313.0
+start_temp = sim_start #k
+end_temp = 432.0 #k
+sim_end = end_temp
 incremement = 0.5 #k
 sample = System(sample_thickness,num_layers,start_temp,end_temp,incremement,alpha_a,alpha_g,sim_start,sim_end)
 data = []
@@ -122,9 +122,9 @@ def plot_save(T,data):
 	#pl.clf()
 temp = end_temp
 counter = 0
-while start_temp <= 373.0:
+while start_temp <= sim_end:
 	end_temp = temp
-	while end_temp <= sim_end:
+	while end_temp >= start_temp:
 		sample = System(sample_thickness,num_layers,start_temp,end_temp,incremement,alpha_a,alpha_g,sim_start,sim_end)
 	
 		data.append(sample.measure_thickness())
@@ -144,9 +144,9 @@ while start_temp <= 373.0:
 		T = []
 		data = []
 		print start_temp, end_temp
-		end_temp = end_temp + 1.0
+		end_temp = end_temp - 0.5
 		counter = counter + 1
 
-	start_temp = start_temp + 1.0
+	start_temp = start_temp + 0.5
 
 pl.savefig(("/home/megaslippers/Projects/polymer-phase-transition/figures/"+name+".png"))
