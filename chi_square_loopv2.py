@@ -24,7 +24,7 @@ obs_temp = []
 obs_thick =[]
 chi_results = []
 
-print "using {} as simulation data".format(sim_files[0])
+#print "using {} as simulation data".format(sim_files[0])
 print "using {} as observed data".format(obs_files[select])
 
 #open the observed data and fill the lists
@@ -69,8 +69,17 @@ for element in sim_files:
 	sim = numpy.array([selected_thick]).T
 	thing = scipy.stats.chisquare(obs, f_exp=sim)
 	#print element
-	print thing[0][0]
+	print thing[0][0], element
 	chi_results.append(thing[0][0])
+	#pl.clf()
+	#pl.plot(selected_temp,sim)
+	#pl.plot(selected_temp,obs)
+	#pl.xlabel("Temperature (K)")
+	#pl.ylabel("Thickness (nm)")
+	#pl.savefig("/home/megaslippers/Projects/polymer-phase-transition/tests/"+str(thing[0][0])+"-"+element+".png")
+	#print element
+	#pl.clf()
+
 
 result = chi_results.index(min(chi_results))
 good_file = sim_files[result]
