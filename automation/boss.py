@@ -1,3 +1,0 @@
-import inctransconstdt
-
-print "done"
