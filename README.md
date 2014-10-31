@@ -12,19 +12,15 @@ Dependencies
 
 Goals
 -----
- - Incremental transitions, DeltaT_t constant
- - Incremental transitions, DeltaT_t not constant
- - Constant DeltaT_t constant, non incremental Pn(T) OR Pn
- - Non constant DeltaT_t, non incremental Pn(T) OR Pn
- - Non constant DeltaT_t, non incremental Pn(T,n)
- - Create a package of these simulations that can be run by other people
+ - create curves that fit the data
 
 To Do
 -----
- - fix known issues
- - fit some curves
+ - relative paths for files
+ - non constant transition temps to reflect lower levels being suppressed by upper levels
 
 Known Issues
 ------------
- - why are the chi square things weird
+ - curves to not behave like data
+ 	- lower layers are not currently suppresed by upper layers.
  
